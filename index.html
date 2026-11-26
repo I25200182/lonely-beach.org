@@ -785,6 +785,14 @@ input:focus,select:focus{outline:3px solid rgba(27,127,140,.35);border-color:var
 .safe{background:#fff4e5;border-left:5px solid var(--sun);padding:12px 14px;border-radius:12px;margin-top:14px;font-size:15px}
 
 /* game */
+.gtop{padding:14px 0 34px}
+.gban{position:relative;overflow:hidden;border-radius:var(--radius) var(--radius) 0 0;height:min(560px,calc((100vw - 36px) * 1.25));background:#b5582f}
+.gban img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 80%}
+.gcap{position:absolute;left:0;right:0;bottom:0;padding:80px 20px 22px;color:#fff;background:linear-gradient(0deg,rgba(6,30,38,.85) 0%,rgba(6,30,38,.55) 60%,rgba(6,30,38,0) 100%)}
+.gcap .eyebrow{color:#ffd9a8}
+.gcap h2{color:#fff;font-size:clamp(36px,10.5vw,56px);line-height:1.02;text-shadow:0 2px 10px rgba(0,0,0,.35)}
+.gcap p{font-size:18px;font-weight:500;max-width:30ch;margin-top:8px;text-shadow:0 1px 6px rgba(0,0,0,.55)}
+.gtop .game{border-radius:0 0 var(--radius) var(--radius)}
 .game{background:var(--deep);color:#fff;border-radius:var(--radius);padding:14px;scroll-margin-top:60px}
 .game h2{color:#fff}
 .game .lede{color:#b9d9d6;margin-bottom:12px}
@@ -870,10 +878,24 @@ footer a{color:#fff}
 
 <a class="sr skip" href="#main">Skip to content</a>
 <nav aria-label="Sections"><div class="wrap">
-  <a href="#find">Find us</a><a href="#menu">Menu</a><a href="#book">Book</a><a href="#rooms" id="navRooms" style="display:none">Stay</a><a href="#beach">Beach</a><a href="#photos">Photos</a><a href="#wildlife">Wildlife</a><a href="#activities">Do</a><a href="#faq">Good to know</a><a href="#moto">Moto tips</a><a href="#game">Game</a>
+  <a href="#game">Game</a><a href="#find">Find us</a><a href="#menu">Menu</a><a href="#book">Book</a><a href="#rooms" id="navRooms" style="display:none">Stay</a><a href="#beach">Beach</a><a href="#photos">Photos</a><a href="#wildlife">Wildlife</a><a href="#activities">Do</a><a href="#faq">Good to know</a><a href="#moto">Moto tips</a>
 </div></nav>
 
 <main id="main">
+<section id="game" class="gtop"><div class="wrap">
+  <div class="gban">
+    <img src="photos/01-pagoda-start.webp" width="799" height="1066" fetchpriority="high" alt="Red dirt road outside Preaek Svay pagoda on Koh Rong, where the trek to Lonely Beach begins">
+    <div class="gcap">
+      <div class="eyebrow">Lonely Beach · Koh Rong · Est. 2008</div>
+      <h2>Trek to Lonely Beach</h2>
+      <p>It all starts on this red dirt road by the pagoda. Can you find your way to the beach?</p>
+    </div>
+  </div>
+  <div class="game" id="trek">
+    <div id="tStage"></div>
+  </div>
+</div></section>
+
 <header class="hero">
   <div class="wrap">
     <div class="eyebrow" style="color:#fff3d2">Koh Rong · Cambodia · Est. 2008</div>
@@ -1044,15 +1066,6 @@ footer a{color:#fff}
 </div></section>
 
 <!-- GAME -->
-<section id="game"><div class="wrap">
-  <div class="game" id="trek">
-    <div class="eyebrow">Just for fun</div>
-    <h2>Trek to Lonely Beach</h2>
-    <p class="lede">Can you find your way to Lonely Beach? A quick, light-hearted game based on the real route from the pagoda. Meet the buffalo, dodge the mud and see how happy you can keep the jungle.</p>
-    <div id="tStage"></div>
-  </div>
-</div></section>
-
 </main>
 <div class="igm" id="igm" role="dialog" aria-modal="true" aria-labelledby="igTitle">
   <div class="card2">
@@ -1982,7 +1995,7 @@ $('actGrid').innerHTML = ACTIVITIES.map(a => '<div class="card"><div style="font
     S = {water:70, nature:100, locals:50, pts:0, max:0, step:0, flags:{}, log:[]};
     locked = false;
     stage.innerHTML =
-      photo('02-road-power-line.webp', '50% 68%', 'Preaek Svay pagoda', '1/1') +
+      photo('02-road-power-line.webp', '50% 68%', 'Follow the power line', '1/1') +
       '<div class="tscene"><h3>Your Lonely Beach adventure</h3>' +
       '<p class="ttext">You’re at the pagoda in Preaek Svay on a rented moto, with a beach, a jungle and a few buffalo between you and lunch. Pick your way there and keep three meters topped up: <b>💧 Water</b>, <b>🌿 Nature</b> and <b>🤝 Locals</b>. There are no wrong turns, only scenic ones. It takes about three minutes. What’s the weather doing?</p>' +
       (best ? '<p class="tbest">Your best: ' + best + '%</p>' : '') +
