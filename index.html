@@ -784,6 +784,23 @@ input:focus,select:focus{outline:3px solid rgba(27,127,140,.35);border-color:var
 .when{font-size:12px;font-weight:700;color:var(--leaf);margin-top:4px}
 .safe{background:#fff4e5;border-left:5px solid var(--sun);padding:12px 14px;border-radius:12px;margin-top:14px;font-size:15px}
 
+/* language picker */
+.langbtn{display:inline-flex;align-items:center;gap:6px;flex:none;background:rgba(255,255,255,.14);color:#fff;border:1.5px solid rgba(255,255,255,.45);border-radius:99px;padding:8px 12px;min-height:44px;font:700 14px 'DM Sans',sans-serif;cursor:pointer;margin-right:4px}
+.langbtn img{border-radius:3px;display:block}
+.langpanel{position:fixed;inset:0;z-index:100;background:rgba(6,30,38,.55);display:flex;align-items:flex-start;justify-content:center;padding:70px 14px 14px}
+.langpanel[hidden]{display:none}
+.langbox{background:#fff;color:#15262b;border-radius:18px;width:100%;max-width:420px;padding:14px 14px 10px;box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.langhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:17px}
+.langhead button{background:none;border:0;font-size:20px;min-width:44px;min-height:44px;cursor:pointer;color:#15262b}
+.langlist{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.langlist button{display:flex;align-items:center;gap:10px;background:#f7f2e7;border:1.5px solid transparent;border-radius:12px;padding:10px;min-height:48px;font:600 15px 'DM Sans',sans-serif;color:#15262b;cursor:pointer;text-align:left}
+.langlist button[aria-current="true"]{border-color:var(--coral);background:#fff4e5}
+.langlist img{border-radius:3px;flex:none;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.langnote{font-size:12px;color:#6b7a7e;margin:10px 2px 2px}
+body{top:0!important;position:static!important}
+iframe.skiptranslate,.goog-te-banner-frame,.VIpgJd-ZVi9od-ORHb-OEVmcd,#goog-gt-tt,.goog-te-balloon-frame,.VIpgJd-yAWNEb-L7lbkb{display:none!important;visibility:hidden!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
+
 /* danny */
 .danny{padding:18px 0 10px}
 .dimg{margin:0 0 16px;border-radius:var(--radius);overflow:hidden;background:#e9e2d0;max-height:620px}
@@ -893,8 +910,17 @@ footer a{color:#fff}
 
 <a class="sr skip" href="#main">Skip to content</a>
 <nav aria-label="Sections"><div class="wrap">
+  <button type="button" id="langBtn" class="langbtn notranslate" translate="no" aria-haspopup="dialog" aria-controls="langPanel" aria-label="Choose language"><img id="langFlag" src="flags/gb.svg" width="24" height="18" alt=""><span id="langCode">EN</span><span aria-hidden="true">▾</span></button>
   <a href="#danny">Danny</a><a href="#game">Game</a><a href="#find">Find us</a><a href="#menu">Menu</a><a href="#rooms" id="navRooms" style="display:none">Stay</a><a href="#beach">Beach</a><a href="#photos">Photos</a><a href="#wildlife">Wildlife</a><a href="#activities">Do</a><a href="#faq">Good to know</a><a href="#moto">Moto tips</a>
 </div></nav>
+<div id="langPanel" class="langpanel notranslate" translate="no" role="dialog" aria-modal="true" aria-label="Choose language" hidden>
+  <div class="langbox">
+    <div class="langhead"><b>Language</b><button type="button" id="langClose" aria-label="Close">✕</button></div>
+    <div id="langList" class="langlist"></div>
+    <p class="langnote">Other languages are translated automatically by Google.</p>
+  </div>
+</div>
+<div id="gt_el" hidden></div>
 
 <main id="main">
 <section id="danny" class="danny"><div class="wrap">
@@ -2091,6 +2117,63 @@ $('actGrid').innerHTML = ACTIVITIES.map(a => '<div class="card"><div style="font
   intro();
 })();
 
+</script>
+<script>
+(function(){
+  var LANGS=[['en','gb','English'],['km','kh','ភាសាខ្មែរ'],['fr','fr','Français'],['es','es','Español'],['de','de','Deutsch'],['zh-CN','cn','中文'],['ja','jp','日本語'],['th','th','ไทย'],['vi','vn','Tiếng Việt'],['lo','la','ລາວ'],['ms','my','Bahasa Melayu']];
+  var SITE='https://lonely-beach.org/', PROXY='https://lonely--beach-org.translate.goog/';
+  var onProxy=/translate\.goog$/.test(location.hostname);
+  var qs=new URLSearchParams(location.search);
+  function setCookie(v){
+    var exp=v?'':'; expires=Thu, 01 Jan 1970 00:00:00 GMT', val=v?'/en/'+v:'';
+    document.cookie='googtrans='+val+'; path=/'+exp;
+    var h=location.hostname; if(h.indexOf('.')>0){document.cookie='googtrans='+val+'; path=/; domain=.'+h.replace(/^www\./,'')+exp;}
+  }
+  // ?lang= coming back from the proxy (or a shared link)
+  if(!onProxy && qs.has('lang')){var q=qs.get('lang');setCookie(q==='en'?'':q);qs.delete('lang');history.replaceState(null,'',location.pathname+(qs.toString()?'?'+qs:'')+location.hash);}
+  function current(){
+    if(onProxy) return qs.get('_x_tr_tl')||'en';
+    var m=document.cookie.match(/googtrans=\/en\/([^;]+)/); return m?decodeURIComponent(m[1]):'en';
+  }
+  var cur=current(), info=LANGS.filter(function(l){return l[0]===cur})[0]||LANGS[0];
+  var flag=document.getElementById('langFlag'), code=document.getElementById('langCode');
+  flag.src='flags/'+info[1]+'.svg'; code.textContent=info[0].slice(0,2).toUpperCase();
+  var panel=document.getElementById('langPanel'), list=document.getElementById('langList'), btn=document.getElementById('langBtn');
+  LANGS.forEach(function(l){
+    var b=document.createElement('button'); b.type='button'; b.lang=l[0];
+    if(l[0]===info[0]) b.setAttribute('aria-current','true');
+    b.innerHTML='<img src="flags/'+l[1]+'.svg" width="28" height="21" alt="" loading="lazy"><span>'+l[2]+'</span>';
+    b.onclick=function(){choose(l[0])}; list.appendChild(b);
+  });
+  function open(){panel.hidden=false;list.querySelector('button').focus()}
+  function close(){panel.hidden=true;btn.focus()}
+  btn.onclick=open; document.getElementById('langClose').onclick=close;
+  panel.addEventListener('click',function(e){if(e.target===panel)close()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden)close()});
+  function proxyUrl(l){return PROXY+'?_x_tr_sl=en&_x_tr_tl='+l+'&_x_tr_hl='+l+location.hash}
+  function choose(l){
+    if(l===info[0]){close();return}
+    if(onProxy){location.href=l==='en'?SITE+'?lang=en'+location.hash:proxyUrl(l);return}
+    setCookie(l==='en'?'':l); location.reload();
+  }
+  if(cur==='en'||onProxy) return;
+  // keep names untranslated
+  var NAMES=/(Lonely Beach|Coral Island|Koh Rong|Koh Touch|Long Set|Preaek Svay|Sok San|Sihanoukville|Danny)/g;
+  var NAMES1=new RegExp(NAMES.source);
+  var w=document.createTreeWalker(document.getElementById('main')||document.body,NodeFilter.SHOW_TEXT,{acceptNode:function(n){return n.parentNode&&!/SCRIPT|STYLE/.test(n.parentNode.nodeName)&&NAMES1.test(n.nodeValue)?1:2}}),nodes=[],n;
+  while(n=w.nextNode())nodes.push(n);
+  nodes.forEach(function(t){
+    var parts=t.nodeValue.split(NAMES); if(parts.length<2)return; var f=document.createDocumentFragment();
+    parts.forEach(function(p,i){if(!p)return; if(i%2){var s=document.createElement('span');s.className='notranslate';s.translate=false;s.textContent=p;f.appendChild(s)}else f.appendChild(document.createTextNode(p))});
+    t.parentNode.replaceChild(f,t);
+  });
+  window.gtInit=function(){new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'gt_el')};
+  var done=false;
+  function fallback(){if(done)return;done=true;location.replace(proxyUrl(cur))}
+  var s=document.createElement('script'); s.src='https://translate.google.com/translate_a/element.js?cb=gtInit'; s.async=true; s.onerror=fallback;
+  document.head.appendChild(s);
+  setTimeout(function(){if(!(window.google&&google.translate&&google.translate.TranslateElement))fallback();else done=true},9000);
+})();
 </script>
 </body>
 </html>
