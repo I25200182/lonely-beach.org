@@ -1301,7 +1301,7 @@ const CONFIG = {
     {src:'photos/10-parking-sign.webp', caption:'The official parking', alt:'Hand-painted parking sign beside a wooden shelter'},
     {src:'photos/11-parking-lonely-beach-sign.webp', caption:'Parking and Lonely Beach signs', alt:'Two wooden signs on a post beside a barbed wire fence'},
     {src:'photos/12-donation-box.webp', caption:'At the parking shelter', alt:'Donation box sign and jar in the shelter'},
-    {src:'photos/13-how-to-get-there.webp', caption:'2 Ways to Lonely Beach: take the Pathway', alt:'Painted map, How to get to Lonely Beach: from You are here, the golden Pathway shortcut runs through jungle and over a plank bridge across a stream to Lonely Beach; the Main road winds round to the right to Lily Beach'},
+    {src:'photos/13-how-to-get-there-v2.webp', caption:'2 Ways to Lonely Beach: take the Pathway', alt:'Painted map, How to get to Lonely Beach: from You are here, the golden Pathway shortcut runs through jungle and over a plank bridge across a stream to Lonely Beach; the Main road winds round to the right to Lily Beach'},
     {src:'photos/14-shortcut-signs.webp', caption:'The shortcut to Lonely Beach', alt:'Black banner and hand-painted signs over a narrow track'},
     {src:'photos/15-junction-keep-following.webp', caption:'Keep following the path', alt:'Sandy fork with a narrow path climbing between bushes'},
     {src:'photos/16-jungle-path-signpost.webp', caption:'Turn left at the signs', alt:'Tree with hand-painted signs and a shaded jungle path'},
@@ -1365,7 +1365,7 @@ const ROUTES = {
       {t:'Cross the river on the new bridge. After heavy rain it can flood. The old wooden bridge has loose planks, so it is for walking only. From the bridge it’s about 7 minutes by moto or 30 minutes on foot.', img:'photos/06-river-crossing.webp'},
       {t:'Carry on past the buffalo fields and the coconut farm. Fenced land is private.', img:'photos/08-track-coconut-farm.webp'},
       {t:'You’ll reach the parking shelter. The path beyond it is narrow and rough, so most people walk from here.', img:'photos/11-parking-lonely-beach-sign.webp'},
-      {t:'At the “2 Ways to Lonely Beach” sign, take the Pathway on the left. If it’s flooded, go straight on, take the sharp left at the top of the hill, then turn right at the bottom.', img:'photos/13-how-to-get-there.webp'},
+      {t:'At the “2 Ways to Lonely Beach” sign, take the Pathway on the left. If it’s flooded, go straight on, take the sharp left at the top of the hill, then turn right at the bottom.', img:'photos/13-how-to-get-there-v2.webp'},
       {t:'Turn left at the tree with the signs and cross the stream. There is deep mud just after it.', img:'photos/16-jungle-path-signpost.webp'}
     ]
   },
@@ -1894,7 +1894,7 @@ $('actGrid').innerHTML = ACTIVITIES.map(a => '<div class="card"><div style="font
       ], next:()=>'twoways'},
 
     twoways: {
-      title:'Two ways to Lonely Beach', img:'13-how-to-get-there.webp', pos:'50% 50%', ar:'4/3',
+      title:'Two ways to Lonely Beach', img:'13-how-to-get-there-v2.webp', pos:'50% 50%', ar:'4/3',
       text:S => 'A hand-painted map shows two ways: the Pathway on the left, marked as the shortcut, and the Main road on the right.' +
         (S.flags.flood ? ' After heavy rain the pathway can flood, and today the low point is under water.' : ''),
       choices:S => S.flags.flood ? [
@@ -2005,7 +2005,7 @@ $('actGrid').innerHTML = ACTIVITIES.map(a => '<div class="card"><div style="font
   let S, list, locked;
 
   // preload the photos so scenes appear instantly
-  ['01-pagoda-start','02-road-power-line','03-sign-heaven-beach','04-culvert-road','05-wooden-bridge','06-river-crossing','07-track-buffalo-fields','08-track-coconut-farm','09-eroded-track-fence','10-parking-sign','12-donation-box','13-how-to-get-there','14-shortcut-signs','15-junction-keep-following','16-jungle-path-signpost','17-jungle-stream-crossing','18-beach-parking-sign','19-beach-parking-sign-2','20-lonely-beach-end-of-world','21-healthy-food-signs','22-bar-gym-volleyball']
+  ['01-pagoda-start','02-road-power-line','03-sign-heaven-beach','04-culvert-road','05-wooden-bridge','06-river-crossing','07-track-buffalo-fields','08-track-coconut-farm','09-eroded-track-fence','10-parking-sign','12-donation-box','13-how-to-get-there-v2','14-shortcut-signs','15-junction-keep-following','16-jungle-path-signpost','17-jungle-stream-crossing','18-beach-parking-sign','19-beach-parking-sign-2','20-lonely-beach-end-of-world','21-healthy-food-signs','22-bar-gym-volleyball']
     .forEach(n => { const i = new Image(); i.src = ph(n + '.webp'); });
 
   function shuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
